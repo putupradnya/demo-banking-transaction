@@ -112,6 +112,7 @@ pip install -r requirements.txt
 - `altair`
 - `time`
 - `random`
+- `paho-mqtt`
 
 Pastikan semua dependencies sudah terinstall sebelum menjalankan project.
 
