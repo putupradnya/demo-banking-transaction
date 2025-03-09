@@ -16,10 +16,12 @@ Project ini adalah sistem **event-driven transaction processing** dengan Solace 
 ✅ **Time-series chart** untuk melihat tren transaksi dari waktu ke waktu.
 
 ---
+## ⚙️ Setup Solace Pubsub+
+Setup atau jalankan Solace via docker melalui step berikut [ini](https://solace.com/products/event-broker/software/getting-started/)
 
 ## ⚙️ Instalasi & Menjalankan Project
 
-### 1️⃣ Clone repository ini
+### 1️⃣ Clone repository
 
 ```bash
 git clone https://github.com/your-repo/realtime-transaction-dashboard.git
