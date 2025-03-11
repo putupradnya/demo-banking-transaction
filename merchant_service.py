@@ -5,15 +5,20 @@ import random
 import paho.mqtt.client as mqtt
 import sqlite3
 from datetime import datetime
+from dotenv import load_dotenv
 
-# Konfigurasi MQTT
-MQTT_HOST = os.getenv("SOLACE_HOST", "localhost")
-MQTT_PORT = int(os.getenv("SOLACE_PORT", 1883))
-MQTT_USERNAME = os.getenv("SOLACE_USERNAME", "default")
-MQTT_PASSWORD = os.getenv("SOLACE_PASSWORD", "default")
+# load env
+load_dotenv()
+
+# Konfigurasi Solace
+MQTT_HOST = os.getenv("SOLACE_HOST")
+MQTT_PORT = int(os.getenv("SOLACE_PORT"))
+MQTT_USERNAME = os.getenv("SOLACE_USERNAME")
+MQTT_PASSWORD = os.getenv("SOLACE_PASSWORD")
 
 # Koneksi ke SQLite
-conn = sqlite3.connect("transactions-db2-log.db", check_same_thread=False)
+DB_PATH = os.getenv("SQLITE_DB_PATH")
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 cursor = conn.cursor()
 
 # Buat tabel transaksi kalau belum ada
@@ -68,7 +73,7 @@ def send_transaction():
         client.publish("transaction/request", json.dumps(payload))
         print(f"[PUBLISHED] Transaction {transaction_id} sent to transaction/request")
 
-        time.sleep(random.randint(2, 5))  # Random delay biar kayak transaksi real
+        time.sleep(random.randint(2, 5)/500)  # Random delay biar kayak transaksi real
 
 # Coba konek ke broker
 try:

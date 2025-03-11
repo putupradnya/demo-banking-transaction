@@ -114,7 +114,11 @@ pip install -r requirements.txt
 - `altair`
 - `time`
 - `random`
+<<<<<<< HEAD
 - `paho-mqtt`
+=======
+- paho-mqtt
+>>>>>>> be98b05 (add .env for local development for flexibility setting credential)
 
 Pastikan semua dependencies sudah terinstall sebelum menjalankan project.
 

@@ -2,15 +2,20 @@ import os
 import json
 import paho.mqtt.client as mqtt
 import sqlite3
+from dotenv import load_dotenv
+
+# load env
+load_dotenv()
 
 # Konfigurasi Solace
-MQTT_HOST = os.getenv("SOLACE_HOST", "localhost")
-MQTT_PORT = int(os.getenv("SOLACE_PORT", 1883))
-MQTT_USERNAME = os.getenv("SOLACE_USERNAME", "default")
-MQTT_PASSWORD = os.getenv("SOLACE_PASSWORD", "default")
+MQTT_HOST = os.getenv("SOLACE_HOST")
+MQTT_PORT = int(os.getenv("SOLACE_PORT"))
+MQTT_USERNAME = os.getenv("SOLACE_USERNAME")
+MQTT_PASSWORD = os.getenv("SOLACE_PASSWORD")
 
 # Koneksi ke SQLite
-conn = sqlite3.connect("transactions.db", check_same_thread=False)
+DB_PATH = os.getenv("SQLITE_DB_PATH")
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 cursor = conn.cursor()
 
 def on_message(client, userdata, message):

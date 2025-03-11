@@ -4,15 +4,20 @@ import time
 import random
 import sqlite3
 import paho.mqtt.client as mqtt
+from dotenv import load_dotenv
 
-# Konfigurasi MQTT
-MQTT_HOST = os.getenv("SOLACE_HOST", "localhost")
-MQTT_PORT = int(os.getenv("SOLACE_PORT", 1883))
-MQTT_USERNAME = os.getenv("SOLACE_USERNAME", "default")
-MQTT_PASSWORD = os.getenv("SOLACE_PASSWORD", "default")
+# load env
+load_dotenv()
+
+# Konfigurasi Solace
+MQTT_HOST = os.getenv("SOLACE_HOST")
+MQTT_PORT = int(os.getenv("SOLACE_PORT"))
+MQTT_USERNAME = os.getenv("SOLACE_USERNAME")
+MQTT_PASSWORD = os.getenv("SOLACE_PASSWORD")
 
 # Koneksi ke SQLite
-conn = sqlite3.connect("transactions-db2-log.db", check_same_thread=False)
+DB_PATH = os.getenv("SQLITE_DB_PATH")
+conn = sqlite3.connect(DB_PATH, check_same_thread=False)
 cursor = conn.cursor()
 
 # Setup MQTT
@@ -41,7 +46,7 @@ def on_message(client, userdata, message):
         # Simulasi pemrosesan transaksi (delay 3-5 detik)
         process_time = random.randint(3, 5)
         print(f"[PROCESSING] {transaction_id} - Processing for {process_time} seconds...")
-        time.sleep(process_time)
+        time.sleep(process_time/500)
 
         completed_at = time.strftime("%Y-%m-%d %H:%M:%S")
 
