@@ -4,7 +4,7 @@ import paho.mqtt.client as mqtt
 import sqlite3
 from dotenv import load_dotenv
 
-# load env
+# Load env
 load_dotenv()
 
 # Konfigurasi Solace
@@ -25,24 +25,22 @@ def on_message(client, userdata, message):
     status = payload["status"]
     completed_at = payload["completed_at"]
 
-    # Update transaksi ke COMPLETED di DB
     cursor.execute("UPDATE transactions SET status=?, completed_at=? WHERE transaction_id=?",
                    (status, completed_at, transaction_id))
     conn.commit()
     print(f"[LOG] Transaction {transaction_id} -> {status} at {completed_at}")
 
 def on_connect(client, userdata, flags, rc):
-    """Subscribe ke transaksi response dari BI Fast."""
+    """Subscribe ke transaksi yang telah selesai."""
     print("[INFO] Connected to Solace MQTT broker")
-    client.subscribe("transaction/response/#")
+    client.subscribe("banking/+/+/completed/+")
+    print("[INFO] Subscribed to banking/+/+/completed/+")
 
-# Setup MQTT Client
 client = mqtt.Client()
 client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
 client.on_connect = on_connect
 client.on_message = on_message
 
-# Koneksi ke broker dan mulai loop
 print(f"[INFO] Connecting to MQTT broker at {MQTT_HOST}:{MQTT_PORT}...")
 client.connect(MQTT_HOST, MQTT_PORT, 60)
 client.loop_forever()

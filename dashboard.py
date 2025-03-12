@@ -19,7 +19,7 @@ def load_data():
 st.set_page_config(page_title="Real-Time Transaction Dashboard", layout="wide")
 
 # Auto Refresh Tiap 1 Detik
-st_autorefresh(interval=1000, key="data_refresh")  # Refresh tiap 1 detik
+st_autorefresh(interval=2000, key="data_refresh")  # Refresh tiap 1 detik
 
 st.title("Transaction Dashboard Monitoring")
 

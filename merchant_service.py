@@ -7,7 +7,7 @@ import sqlite3
 from datetime import datetime
 from dotenv import load_dotenv
 
-# load env
+# Load env
 load_dotenv()
 
 # Konfigurasi Solace
@@ -49,8 +49,8 @@ def send_transaction():
     while True:
         transaction_id = generate_transaction_id()
         amount = random.randint(10000, 1000000)
-        source = random.choice(["BANK A", "BANK B", "BANK C", "BANK D", "BANK E"])
-        destination = random.choice(["BANK A", "BANK B", "BANK C", "BANK D", "BANK E"])
+        source = random.choice(["BNI", "Mandiri", "BCA", "BRI", "CIMB", "HiBank"])
+        destination = random.choice(["BNI", "Mandiri", "BCA", "BRI", "CIMB", "HiBank"])
         created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # Simpan transaksi dengan status PENDING
@@ -62,7 +62,8 @@ def send_transaction():
         
         print(f"[LOG] Transaction {transaction_id} created with status PENDING")
 
-        # Publish ke Bifast
+        # Publish ke Bifast dengan topic routing yang lebih terstruktur
+        topic = f"banking/{source}/{destination}/created/{transaction_id}"
         payload = {
             "transaction_id": transaction_id,
             "amount": amount,
@@ -70,12 +71,12 @@ def send_transaction():
             "destination": destination,
             "created_at": created_at
         }
-        client.publish("transaction/request", json.dumps(payload))
-        print(f"[PUBLISHED] Transaction {transaction_id} sent to transaction/request")
+        client.publish(topic, json.dumps(payload))
+        print(f"[PUBLISHED] {transaction_id} sent to {topic}")
 
-        time.sleep(random.randint(2, 5)/500)  # Random delay biar kayak transaksi real
+        time.sleep(random.randint(2, 5) / 25)  # Random delay biar kayak transaksi real
 
-# Coba konek ke broker
+# Koneksi ke broker
 try:
     print(f"[INFO] Connecting to MQTT broker at {MQTT_HOST}:{MQTT_PORT}...")
     client.connect(MQTT_HOST, MQTT_PORT, 60)

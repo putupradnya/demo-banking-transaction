@@ -4,6 +4,8 @@
 
 Project ini adalah sistem **event-driven transaction processing** dengan Solace Pubsub+ yang terdiri dari beberapa service untuk menangani transaksi merchant dan sistem pembayaran seperti Bifast(Simplifikasi). Data transaksi disimpan dalam SQLite dan divisualisasikan dalam dashboard real-time berbasis **Streamlit**.
 
+![Alt text](idea.jpg "Ide implementasi")
+
 ---
 
 ## 📌 Fitur Utama
@@ -11,12 +13,14 @@ Project ini adalah sistem **event-driven transaction processing** dengan Solace 
 ✅ **Merchant Service** → Generate transaksi baru dari merchant.
 ✅ **Bifast Service** → Memproses transaksi merchant ke status **COMPLETED**.
 ✅ **Logging Service** → Mencatat semua transaksi dalam database SQLite.
-✅ **Dashboard Real-time** → Menampilkan metrik transaksi dengan **auto-refresh setiap 1 detik**.
+✅ **Dashboard Real-time** → Menampilkan metrik transaksi dengan **auto-refresh setiap sekian detik**.
 ✅ **Stacked bar chart** untuk perbandingan transaksi **merchant & receiver**.
 ✅ **Time-series chart** untuk melihat tren transaksi dari waktu ke waktu.
 
 ---
+
 ## ⚙️ Setup Solace Pubsub+
+
 Setup atau jalankan Solace via docker melalui step berikut [ini](https://solace.com/products/event-broker/software/getting-started/)
 
 ## ⚙️ Instalasi & Menjalankan Project
@@ -60,6 +64,10 @@ pip install -r requirements.txt
   ```bash
   streamlit run dashboard.py
   ```
+- **Sample subscribe Topic:**
+  Kita bisa gunakan untuk sample subscribe topic dengan routing seperti ini
+  format: banking/{source}/{destination}/{created/completed}/{transaction_id}
+  Misal kita ingin mengambil seluruh transaksi yang destinationnya adalah `b` dapat menggukan contoh berikut:  `banking/*/HiBank/created/* `
 
 ---
 
@@ -114,11 +122,7 @@ pip install -r requirements.txt
 - `altair`
 - `time`
 - `random`
-<<<<<<< HEAD
 - `paho-mqtt`
-=======
-- paho-mqtt
->>>>>>> be98b05 (add .env for local development for flexibility setting credential)
 
 Pastikan semua dependencies sudah terinstall sebelum menjalankan project.
 
